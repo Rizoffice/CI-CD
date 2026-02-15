@@ -1,0 +1,42 @@
+name: Build the CI job for nodejs application
+
+on:
+  push:
+    branches:
+      - ci-cd-branch
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: List all files and folders
+        run: ls -la
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nodejs-app-artifacts
+          path: .
+
+     # - name: Get the username and password from GitHub
+      #  run: |
+       #   echo "Username: ${{ vars.USERNAME }}"
+        #  echo "Password: ${{ secrets.PASSWORD }}"
